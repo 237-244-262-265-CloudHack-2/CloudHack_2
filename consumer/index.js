@@ -15,15 +15,15 @@ amqp.connect("amqp://localhost", (err0, conn) => {
         conn.createChannel((err1, channel) => {
             if (err1) throw err1;
             else {
-                channel.assertQueue("test", {
+                channel.assertQueue("ride_share", {
                     durable: false
                 })
-                channel.consume("test", async (msg) => {
+                channel.consume("ride_share", async (msg) => {
                     let payload = JSON.parse(msg.content)
                     let delay = payload.time
-                    console.log("Delay:", delay)
+                    console.log("[CONSUMER] Delay:", delay, "ms")
                     await new Promise(resolve => setTimeout(resolve, delay))
-                    console.log(CONSUMER_ID, payload.taskid)
+                    console.log("[CONSUMER]",CONSUMER_ID, payload.taskid)
                 }, {
                     noAck: true
                 })
