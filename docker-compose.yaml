@@ -1,0 +1,29 @@
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+  producer:
+    build: producer/
+    ports:
+      - "8080:8080"
+  db_consumer:
+    build: db_consumer/
+  consumer1:
+    build: consumer/
+    environment:
+      - CONSUMER_IP=123.123.123.123
+      - CONSUMER_ID=consumer1
+  consumer2:
+    build: consumer/
+    environment:
+      - CONSUMER_IP=221.222.122.122
+      - CONSUMER_ID=consumer2
+networks:
+  default:
+    driver: bridge

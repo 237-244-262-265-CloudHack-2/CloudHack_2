@@ -12,7 +12,7 @@ app.post("/new_ride", async (req,res)=>{
     try{
         console.log(req.body)
         res.status(200).send("success");
-        amqp.connect('amqp://localhost', async (err0, conn)=>{
+        amqp.connect('amqp://rabbitmq', async (err0, conn)=>{
             if(err0) throw err0;
             else {
                 conn.createChannel(async (err1,channel)=>{
