@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 8080;
 app.use(express.json())
 
 let map_array = []
+let TASK_ID = 0
 
 app.post("/new_ride", (req,res)=>{
     try{
@@ -20,7 +21,12 @@ app.post("/new_ride", (req,res)=>{
                         channel.assertQueue("test", {
                             durable: false
                         })
-                        channel.sendToQueue("test", Buffer.from("hello world"))
+                        let payload = {
+                            "time": req.body.time,
+                            "taskid": TASK_ID
+                        }
+                        channel.sendToQueue("test", Buffer.from(JSON.stringify(payload)))
+                        TASK_ID += 1;
                     }
                 })
                 setTimeout(()=>{
@@ -36,11 +42,11 @@ app.post("/new_ride", (req,res)=>{
 app.post("/new_ride_matching_consumer", (req, res) => {
     try{
         let map = {
-            "name" : req.body.name,
+            "NAME" : req.body.id,
             "IP": req.body.ip
         }
         map_array.push(map)
-        console.log(map_array)
+        console.log(map)
         res.status(200).send("success")
     } catch {
         res.status.send("Request missing details")
