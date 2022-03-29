@@ -3,9 +3,11 @@ const axios = require('axios').default
 
 let CONSUMER_ID = process.env.CONSUMER_ID
 let IP = process.env.CONSUMER_IP
+let SERVER_HOST = process.env.SERVER_HOST
+let SERVER_PORT = process.env.SERVER_PORT
 
 function main() {
-    axios.post("http://producer:8080/new_ride_matching_consumer", {
+    axios.post(`http://${SERVER_HOST}:${SERVER_PORT}/new_ride_matching_consumer`, {
         "ip": IP,
         "id": CONSUMER_ID
     })
