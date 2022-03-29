@@ -22,9 +22,9 @@ function main() {
                     channel.consume("ride_share", async (msg) => {
                         let payload = JSON.parse(msg.content)
                         let delay = payload.time
-                        console.log("[CONSUMER] Delay:", delay, "ms")
+                        console.log(`[${CONSUMER_ID}] TASK ${payload.taskid} accepted! Delay: ${delay}ms`)
                         await new Promise(resolve => setTimeout(resolve, delay))
-                        console.log("[CONSUMER]", CONSUMER_ID, payload.taskid)
+                        console.log(`[${CONSUMER_ID}] TASK ${payload.taskid} completed!`)
                     }, {
                         noAck: true
                     })

@@ -4,26 +4,42 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    logging:
+      driver: none
+    networks:
+      - custom_network
   mongodb:
     image: mongo:latest
     ports:
       - "27017:27017"
+    logging:
+      driver: none
+    networks:
+      - custom_network
   producer:
     build: producer/
     ports:
       - "8080:8080"
+    networks:
+      - custom_network
   db_consumer:
     build: db_consumer/
+    networks:
+      - custom_network
   consumer1:
     build: consumer/
     environment:
       - CONSUMER_IP=123.123.123.123
       - CONSUMER_ID=consumer1
+    networks:
+      - custom_network
   consumer2:
     build: consumer/
     environment:
       - CONSUMER_IP=221.222.122.122
       - CONSUMER_ID=consumer2
+    networks:
+      - custom_network
 networks:
-  default:
+  custom_network:
     driver: bridge
